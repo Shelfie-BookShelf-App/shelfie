@@ -5,6 +5,7 @@ const session = require('express-session')
 const GitHub = require('./config/auth.js')
 
 const authRoutes = require('./routes/auth.js')
+const bookRoutes = require('./routes/book.js')
 
 const app = express()
 
@@ -32,6 +33,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/auth', authRoutes)
+app.use('/books', bookRoutes)
 
 const PORT = process.env.PORT || 3001
 
