@@ -3,14 +3,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { setGoogleBooks } from "../features/books/booksSlice";
 import GoogleBook from "./GoogleBook";
 
-const query = "bestsellers";
-const apiKey = import.meta.env.VITE_API_KEY;
-const URL = `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=40&key=${apiKey}`;
-
 export default function GoogleBooks() {
   const [errorMsg, setErrorMsg] = useState("");
 
-  const { googleBooks } = useSelector((state) => state.books);
+  const { googleBooks, filteredGoogleBooks, selectedCategory, searchQuery } =
+    useSelector((state) => state.books);
+
+  const apiKey = import.meta.env.VITE_API_KEY;
+  const URL = `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&maxResults=40&key=${apiKey}`;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,13 +29,13 @@ export default function GoogleBooks() {
     };
 
     fetchGoogleBooks();
-  }, []);
+  }, [searchQuery]);
 
   if (errorMsg) return <h3>{errorMsg}</h3>;
 
   return (
-    <ul>
-      {googleBooks.map((book) => (
+    <ul className="grid grid-cols-4 gap-4">
+      {(selectedCategory ? filteredGoogleBooks : googleBooks).map((book) => (
         <li key={book.id}>
           <GoogleBook book={book} />
         </li>

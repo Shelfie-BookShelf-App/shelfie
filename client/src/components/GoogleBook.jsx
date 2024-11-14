@@ -1,4 +1,12 @@
+import { useState } from "react";
+
 export default function GoogleBook({ book }) {
+  const [saveBook, setSaveBook] = useState(false);
+
+  const toggleSaveBook = () => {
+    setSaveBook((prev) => !prev);
+  };
+
   return (
     <article>
       <figure>
@@ -9,6 +17,8 @@ export default function GoogleBook({ book }) {
       <p>Page Count: {book?.volumeInfo?.pageCount}</p>
       <p>Language: {book?.volumeInfo?.language}</p>
       <p>Description: {book?.volumeInfo?.description?.slice(0, 100)}</p>
+      <p>Categories: {book?.volumeInfo?.categories?.join(",")}</p>
+      <p onClick={toggleSaveBook}>{saveBook ? "❤️" : "🤍"}</p>
     </article>
   );
 }
