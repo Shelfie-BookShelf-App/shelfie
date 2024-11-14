@@ -2,7 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   googleBooks: [],
+  filteredGoogleBooks: [],
   favoriteBooks: [],
+  selectedCategory: "",
+  searchQuery: "bestsellers",
 };
 
 export const booksSlice = createSlice({
@@ -10,12 +13,35 @@ export const booksSlice = createSlice({
   initialState,
   reducers: {
     setGoogleBooks: (state, action) => {
-      console.log(action.payload);
-      return { ...state, googleBooks: action.payload };
+      state.googleBooks = action.payload;
+    },
+    setSelectedCategory: (state, action) => {
+      state.selectedCategory = action.payload;
+    },
+    setFilteredGoogleBooks: (state) => {
+      const filteredBooksByCategory =
+        !state.selectedCategory || state.selectedCategory === "All"
+          ? state.googleBooks
+          : state.googleBooks.filter((book) =>
+              book?.volumeInfo?.categories?.some((category) =>
+                category
+                  .toLowerCase()
+                  .includes(state.selectedCategory.toLowerCase())
+              )
+            );
+      state.filteredGoogleBooks = filteredBooksByCategory;
+    },
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
     },
   },
 });
 
-export const { setGoogleBooks } = booksSlice.actions;
+export const {
+  setGoogleBooks,
+  setSelectedCategory,
+  setFilteredGoogleBooks,
+  setSearchQuery,
+} = booksSlice.actions;
 
 export default booksSlice.reducer;

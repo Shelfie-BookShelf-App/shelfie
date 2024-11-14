@@ -4,6 +4,7 @@ const createUsersTable = async () => {
   try {
     const createUsersTableQuery = `
       DROP TABLE IF EXISTS users;
+      
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY, 
         username VARCHAR(255) NOT NULL,
@@ -23,6 +24,7 @@ const createBooksTable = async () => {
   try {
     const createBooksTableQuery = `
       DROP TABLE IF EXISTS books;
+     
       CREATE TABLE IF NOT EXISTS books (
         id VARCHAR(255) PRIMARY KEY,
         title TEXT NOT NULL,
@@ -43,7 +45,7 @@ const createBooksTable = async () => {
 const createUsersBooksTable = async () => {
   try {
     const createUsersBooksTableQuery = `
-          DROP TABLE IF EXISTS users_books;
+      DROP TABLE IF EXISTS users_books;
 
       CREATE TABLE IF NOT EXISTS users_books (
         user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -62,7 +64,7 @@ const createUsersBooksTable = async () => {
 const createCatagoriesTable = async () => {
   try {
     const createCategoriesBooksTableQuery = `
-              DROP TABLE IF EXISTS categories;
+      DROP TABLE IF EXISTS categories;
 
       CREATE TABLE IF NOT EXISTS categories (
         id SERIAL PRIMARY KEY,
@@ -80,7 +82,7 @@ const createCatagoriesTable = async () => {
 const createCategoriesBooksTable = async () => {
   try {
     const createCategoriesBooksTableQuery = `
-              DROP TABLE IF EXISTS categories_books;
+      DROP TABLE IF EXISTS categories_books;
 
       CREATE TABLE IF NOT EXISTS categories_books (
         book_id VARCHAR(255) REFERENCES books(id) ON DELETE CASCADE,
@@ -99,7 +101,7 @@ const createCategoriesBooksTable = async () => {
 const createAuthorsTable = async () => {
   try {
     const createAuthorsTableQuery = `
-              DROP TABLE IF EXISTS authors;
+      DROP TABLE IF EXISTS authors;
 
       CREATE TABLE IF NOT EXISTS authors (
         id SERIAL PRIMARY KEY,
@@ -117,7 +119,7 @@ const createAuthorsTable = async () => {
 const createAuthorsBooksTable = async () => {
   try {
     const createAuthorsBooksTableQuery = `
-              DROP TABLE IF EXISTS authors_books;
+      DROP TABLE IF EXISTS authors_books;
 
       CREATE TABLE IF NOT EXISTS authors_books (
         author_id INTEGER REFERENCES authors(id) ON DELETE CASCADE,
