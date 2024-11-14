@@ -6,14 +6,18 @@ const createUsersTable = async () => {
       DROP TABLE IF EXISTS users;
       
       CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY, 
+        id SERIAL PRIMARY KEY,
+        githubid int NOT NULL,
         username VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        password VARCHAR(255) NOT NULL
+        email VARCHAR(255),
+        password VARCHAR(255),
+        avatarUrl VARCHAR(500) NOT NULL,
+        accessToken VARCHAR(512) NOT NULL,
+        name VARCHAR(255)
       ); 
     `;
     await pool.query(createUsersTableQuery);
-    console.log(`✅ createUsersTable created successfully`);
+    console.log(`✅ Table users created successfully`);
   } catch (err) {
     console.log("❌ failed to createUsersTable");
     console.error(err);
@@ -35,7 +39,7 @@ const createBooksTable = async () => {
       ); 
     `;
     await pool.query(createBooksTableQuery);
-    console.log(`✅ createBooksTable created successfully`);
+    console.log(`✅ Table books created successfully`);
   } catch (err) {
     console.log("❌ failed to createBooksTable");
     console.error(err);
@@ -54,14 +58,14 @@ const createUsersBooksTable = async () => {
       );
     `;
     await pool.query(createUsersBooksTableQuery);
-    console.log(`✅ createUsersBooksTable created successfully`);
+    console.log(`✅ Table users_books created successfully`);
   } catch (err) {
     console.log("❌ failed to createUsersBooksTable");
     console.error(err);
   }
 };
 
-const createCatagoriesTable = async () => {
+const createCategoriesTable = async () => {
   try {
     const createCategoriesBooksTableQuery = `
       DROP TABLE IF EXISTS categories;
@@ -72,7 +76,7 @@ const createCatagoriesTable = async () => {
       );
     `;
     await pool.query(createCategoriesBooksTableQuery);
-    console.log(`✅ createCatagoriesTable created successfully`);
+    console.log(`✅ Table categories created successfully`);
   } catch (err) {
     console.log("❌ failed to createCatagoriesTable");
     console.error(err);
@@ -91,7 +95,7 @@ const createCategoriesBooksTable = async () => {
       );
     `;
     await pool.query(createCategoriesBooksTableQuery);
-    console.log(`✅ createCategoriesBooksTable created successfully`);
+    console.log(`✅ Table categories_books created successfully`);
   } catch (err) {
     console.log("❌ failed to createCategoriesBooksTable");
     console.error(err);
@@ -109,7 +113,7 @@ const createAuthorsTable = async () => {
       );
     `;
     await pool.query(createAuthorsTableQuery);
-    console.log(`✅ createAuthorsTable created successfully`);
+    console.log(`✅ Table authors created successfully`);
   } catch (err) {
     console.log("❌ failed to createAuthorsTable");
     console.error(err);
@@ -128,18 +132,38 @@ const createAuthorsBooksTable = async () => {
       );
     `;
     await pool.query(createAuthorsBooksTableQuery);
-    console.log(`✅ createAuthorsBooksTable created successfully`);
+    console.log(`✅ Table authors_books created successfully`);
   } catch (err) {
     console.log("❌ failed to createAuthorsBooksTable");
     console.error(err);
   }
 };
 
+const dropTable = async () => {
+  try {
+    const dropTableQuery = `
+      DROP TABLE IF EXISTS users_books;
+      DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS categories_books;
+      DROP TABLE IF EXISTS categories;
+      DROP TABLE IF EXISTS authors_books;
+      DROP TABLE IF EXISTS authors;
+      DROP TABLE IF EXISTS books;
+    `;
+    await pool.query(dropTableQuery);
+    console.log(`✅ Tables dropped successfully`);
+  } catch (err) {
+    console.log("❌ failed to dropTable");
+    console.error(err);
+  }
+}
+
 const setup = async () => {
+  await dropTable();
   await createUsersTable();
   await createBooksTable();
   await createUsersBooksTable();
-  await createCatagoriesTable();
+  await createCategoriesTable();
   await createCategoriesBooksTable();
   await createAuthorsTable();
   await createAuthorsBooksTable();
