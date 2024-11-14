@@ -26,7 +26,7 @@ Backend: Express - Node.js, PostgreSQL, Passport.js, Railway, OpenAI API with La
 
 ### 1. Book Search Query
 
-Users can search for books by title, with future plans to integrate more advanced search algorithms.
+✅ Users can search for books by title, with future plans to integrate more advanced search algorithms.
 
 [gif goes here]
 
@@ -41,7 +41,6 @@ Users can save their favorite books, log in and out of their accounts, and benef
 A language model chatbot offers users personalized book consulting and recommendations, based on their preferences and reading habits.
 
 [gif goes here]
-
 
 ## Installation Instructions
 
