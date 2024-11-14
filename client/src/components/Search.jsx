@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSearchQuery } from "../features/books/booksSlice";
 import { useState } from "react";
 
 export default function Search({ children }) {
   const [search, setSearch] = useState("");
 
-  const { searchQuery } = useSelector((state) => state.books);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -18,7 +17,7 @@ export default function Search({ children }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex items-center gap-2">
       <input
         type="text"
         placeholder={children}

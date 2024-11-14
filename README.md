@@ -28,7 +28,7 @@ Backend: Express - Node.js, PostgreSQL, Passport.js, Railway, OpenAI API with La
 
 ✅ Users can search for books by title, with future plans to integrate more advanced search algorithms.
 
-[gif goes here]
+![Demo Gif](./client/src/assets/Milestone4_Demo.gif)
 
 ### 2. Account Bookmarking and Recommendation System
 
