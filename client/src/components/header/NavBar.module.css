@@ -1,0 +1,11 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  background-color: "#f8f9fa";
+}
+
+.avatar {
+  height: 50px;
+  width: auto;
+}

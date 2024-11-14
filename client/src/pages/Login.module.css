@@ -1,0 +1,12 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+}
+
+.login_button {
+  width: 50;
+  height: 50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
