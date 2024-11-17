@@ -6,11 +6,11 @@ import Search from "./pages/Search";
 
 function App() {
   return (
-    <div className="prose max-w-none w-full h-full min-h-screen">
+    <div className="prose lg:prose-lg max-w-[1440px] m-auto w-full h-full min-h-screen scroll-smooth">
       <Header />
       <div className="mt-24">
-        {/* <Home /> */}
-        <Search />
+        <Home />
+        {/* <Search /> */}
       </div>
       <Footer />
     </div>

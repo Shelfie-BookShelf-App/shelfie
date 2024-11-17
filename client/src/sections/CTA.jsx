@@ -1,6 +1,8 @@
+import { imageCollection } from "../constants";
+
 export default function CTA() {
   return (
-    <section className="py-12">
+    <section className="cta py-12">
       <div className="border my-4 mx-8 grid grid-cols-2">
         <div className="p-8 flex flex-col gap-4">
           <h2>Join Our Book Lovers Community</h2>
@@ -13,11 +15,13 @@ export default function CTA() {
             <button className="btn">Learn More</button>
           </div>
         </div>
-        <img
-          src="https://images.unsplash.com/photo-1512508561942-18fbe6d5d0cf?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-          className="h-full w-full object-cover"
-        />
+        <figure>
+          <img
+            src={imageCollection[3]}
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        </figure>
       </div>
     </section>
   );
