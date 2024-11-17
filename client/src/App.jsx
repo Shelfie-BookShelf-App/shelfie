@@ -1,13 +1,18 @@
 import "./App.css";
-import GoogleBooks from "./components/GoogleBooks";
-import Header from "./components/Header";
+import Header from "./sections/Header";
+import Footer from "./sections/Footer";
 import Home from "./pages/Home";
+import Search from "./pages/Search";
 
 function App() {
   return (
-    <div className="p-4">
+    <div className="prose max-w-none w-full h-full min-h-screen">
       <Header />
-      <Home />
+      <div className="mt-24">
+        {/* <Home /> */}
+        <Search />
+      </div>
+      <Footer />
     </div>
   );
 }
