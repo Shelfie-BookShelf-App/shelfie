@@ -1,5 +1,5 @@
 import CheckedCategories from "./CheckedCategories";
-import Search from "./Search";
+import Searchbar from "./Searchbar";
 
 const popularBooks = [
   {
@@ -74,7 +74,7 @@ const newBooksCategories = [
 export default function Sidebar() {
   return (
     <div className="flex flex-col gap-4">
-      <Search>Search categories...</Search>
+      <Searchbar>Search categories...</Searchbar>
       <CheckedCategories options={popularBooks}>
         Popular Categories
       </CheckedCategories>

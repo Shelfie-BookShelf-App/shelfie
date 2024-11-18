@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 
 export default function GoogleBook({ book, api_url }) {
   const [saveBook, setSaveBook] = useState(false);
-  const [languageName, setLanguageName] = useState(""); 
-  const languageCode = book?.volumeInfo?.language; 
+  const [languageName, setLanguageName] = useState("");
+  const languageCode = book?.volumeInfo?.language;
 
   // Fetch the language name using the code
   useEffect(() => {
@@ -31,18 +31,60 @@ export default function GoogleBook({ book, api_url }) {
   };
 
   return (
-    <article>
-      <figure>
-        <img src={book?.volumeInfo?.imageLinks?.thumbnail} alt="" />
+    <article
+      className="flex flex-col p-4 border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow"
+      style={{
+        width: "300px",
+        margin: "0 auto",
+        height: "600px",
+        display: "flex",
+      }}
+    >
+      <figure className="flex justify-center mb-4">
+        <img
+          src={book?.volumeInfo?.imageLinks?.thumbnail || "/placeholder.png"}
+          alt={book?.volumeInfo?.title || "Book Cover"}
+          className="rounded-md max-h-48 object-cover"
+        />
       </figure>
-      <h3 className="font-bold">{book?.volumeInfo?.title}</h3>
-      <p>Authors: {book?.volumeInfo?.authors?.join(", ")}</p>
-      <p>Published Date: {book?.volumeInfo?.publishedDate}</p>
-      <p>Page Count: {book?.volumeInfo?.pageCount}</p>
-      <p>Language: {languageName || "Loading..."} {/* Display the fetched language name */}</p>
-      <p>Description: {book?.volumeInfo?.description?.slice(0, 100)}</p>
-      <p>Categories: {book?.volumeInfo?.categories?.join(", ")}</p>
-      <p onClick={toggleSaveBook}>{saveBook ? "❤️" : "🤍"}</p>
+      <div style={{ flexGrow: 1 }}>
+        <h3 className="font-bold text-lg mb-2">{book?.volumeInfo?.title}</h3>
+        <p className="text-sm text-gray-600 mb-1">
+          <strong>Authors:</strong> {book?.volumeInfo?.authors?.join(", ") || "Unknown"}
+        </p>
+        <p className="text-sm text-gray-600 mb-1">
+          <strong>Published Date:</strong> {book?.volumeInfo?.publishedDate || "N/A"}
+        </p>
+        <p className="text-sm text-gray-600 mb-1">
+          <strong>Pages:</strong> {book?.volumeInfo?.pageCount || "N/A"}
+        </p>
+        <p className="text-sm text-gray-600 mb-1">
+          <strong>Language:</strong> {languageName || "Loading..."}
+        </p>
+        <p
+          className="text-sm text-gray-600 mb-2 truncate-lines"
+          style={{
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            WebkitLineClamp: 2,
+          }}
+        >
+          <strong>Description:</strong> {book?.volumeInfo?.description || "No description available"}
+        </p>
+        <p className="text-sm text-gray-600 mb-2">
+          <strong>Categories:</strong> {book?.volumeInfo?.categories?.join(", ") || "Uncategorized"}
+        </p>
+      </div>
+      <button
+        onClick={toggleSaveBook}
+        className="self-start px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+        style={{
+          marginTop: "10px",
+        }}
+      >
+        {saveBook ? "❤️ Saved" : "🤍 Save"}
+      </button>
     </article>
   );
 }

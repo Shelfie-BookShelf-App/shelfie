@@ -48,7 +48,7 @@ function App() {
   return (
     <div className="prose lg:prose-lg max-w-[1440px] m-auto w-full h-full min-h-screen scroll-smooth">
       <Header user={user} api_url={API_URL}/>
-      <div className="mt-[168px]"> 
+      <div className="mt-[120px]"> 
         {element}
       </div>
       <Footer />
