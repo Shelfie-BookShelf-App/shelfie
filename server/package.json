@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "setup": "node ./database/setup.js",
+    "setup": "node ./config/setup.js",
     "start": "nodemon --require dotenv/config server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

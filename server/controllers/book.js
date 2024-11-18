@@ -2,15 +2,15 @@ const { pool } = require('../config/database.js');
 
 const addBook = async (req, res) => {
   try {
-    const { title, image, description, pageCount, language } = req.body
+    const { title, image, description, pageCount, language, authors } = req.body
     
     let bookExisted = await pool.query('SELECT COUNT(*) FROM books WHERE title = $1', [title])
     if (bookExisted.rows[0] == 0) {
       await pool.query(`
-        INSERT INTO books ( title, image, description, pageCount, language )
-        VALUES($1, $2, $3, $4, $5)
+        INSERT INTO books (title, image, description, pageCount, language, authors)
+        VALUES($1, $2, $3, $4, $5, $6)
         RETURNING *`,
-        [title, image, description, pageCount, language]
+        [title, image, description, pageCount, language, authors]
       )
     } 
 
