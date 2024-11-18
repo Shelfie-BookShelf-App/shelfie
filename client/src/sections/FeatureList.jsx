@@ -13,7 +13,7 @@ export default function FeatureList() {
         {features.map((feature, index) => {
           const { title, description } = feature;
           return (
-            <article key={title} className="flex flex-col gap-4">
+            <article key={index} className="flex flex-col gap-4">
               <h3>{title}</h3>
               <p>{description}</p>
             </article>
