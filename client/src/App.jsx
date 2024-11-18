@@ -6,9 +6,9 @@ import Header from "./sections/Header";
 import Footer from "./sections/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-// import Login from "./pages/Login_Old";
 import Search from "./pages/Search";
 import Saved_Books from './pages/Saved_Books';
+import Chatbot from './pages/Chatbot';
 
 function App() {
   const [user, setUser] = useState(null)
@@ -33,19 +33,22 @@ function App() {
     },
     {
       path: '/search',
-      element: user && user.id ? <Search /> : <Login api_url={API_URL}/>
+      element: user && user.id ? <Search api_url={API_URL}/> : <Login api_url={API_URL}/>
     },
     {
       path: '/saved_books',
-      element: user && user.id ? <Saved_Books /> : <Login api_url={API_URL}/>
+      element: user && user.id ? <Saved_Books api_url={API_URL}/> : <Login api_url={API_URL}/>
+    },
+    {
+      path: '/chatbot',
+      element: user && user.id ? <Chatbot api_url={API_URL}/> : <Login api_url={API_URL}/>
     }
-
   ])
 
   return (
     <div className="prose lg:prose-lg max-w-[1440px] m-auto w-full h-full min-h-screen scroll-smooth">
       <Header user={user} api_url={API_URL}/>
-      <div className="mt-24">
+      <div className="mt-[168px]"> 
         {element}
       </div>
       <Footer />
