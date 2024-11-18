@@ -2,7 +2,7 @@ import { NavLink, useNavigate, Link } from 'react-router-dom';
 
 export default function Nav({ user, api_url }) {
   const AUTH_URL = `${api_url}/auth/logout`;
-
+  const AUTH_URL_LOGIN = `${api_url}/auth/github`
   const logout = async () => {
     try {
       const response = await fetch(AUTH_URL, { credentials: 'include' });
@@ -29,7 +29,13 @@ export default function Nav({ user, api_url }) {
               Logout
             </button>
           </li>
-        ) : null}
+        ) : 
+        <li>
+          <a href={AUTH_URL_LOGIN} className="">
+              🔒 Login via Github
+            </a>
+          </li>
+          }
       </ul>
     </nav>
   );

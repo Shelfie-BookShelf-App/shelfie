@@ -1,16 +1,24 @@
-const Login = (props) => {
-    
-  const AUTH_URL = `${props.api_url}/auth/github`
-   
-  return (
-      <div className="w-screen h-screen flex justify-center items-center">
-          <center>
-            <a href={AUTH_URL} className="">
-              🔒 Login via Github
-            </a>
-          </center>
-      </div>  
-  )
-}
+import BookSlider from "../components/BookSlider";
+import Categories from "../components/Categories";
+import GoogleBooks from "../components/GoogleBooks";
+import CTA from "../sections/CTA";
+import FeatureList from "../sections/FeatureList";
+import Features from "../sections/Features";
+import Hero from "../sections/Hero";
+import HowItWorks from "../sections/HowItWorks";
+import Team from "../sections/Team";
+import Testimonial from "../sections/Testimonial";
 
-export default Login
+export default function Login() {
+  return (
+    <div className="px-12">
+      <Hero />
+      <Features />
+      <FeatureList />
+      <CTA />
+      <Testimonial />
+      <HowItWorks />
+      <Team />
+    </div>
+  );
+}
