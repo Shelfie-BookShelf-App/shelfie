@@ -38,7 +38,7 @@ router.get('/github', passport.authenticate('github', { scope: [ 'read:user' ] }
 
 router.get('/github/callback', passport.authenticate('github', {
         successRedirect: 'http://localhost:5173/',
-        failureRedirect: 'http://localhost:5173/destinations',
+        failureRedirect: 'http://localhost:5173/',
     })
 )
 

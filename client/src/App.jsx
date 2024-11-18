@@ -7,6 +7,7 @@ import Footer from "./sections/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Search from "./pages/Search";
+import UserProfile from './pages/UserProfile';
 
 function App() {
   const [user, setUser] = useState(null)
@@ -29,16 +30,20 @@ function App() {
       path: '/',
       element: user && user.id ? <Home /> : <Login api_url={API_URL}/>
     },
-    // {
-    //   path: '/user/:userId',
-    //   element: user && user.id ? <UserProfile user={user}/> : <Login api_url={API_URL}/>
-    // }
-    // Declare more paths here
+    {
+      path: '/search',
+      element: user && user.id ? <Search /> : <Login api_url={API_URL}/>
+    },
+    {
+      path: '/saved_books',
+      element: user && user.id ? <UserProfile /> : <Login api_url={API_URL}/>
+    }
+
   ])
 
   return (
     <div className="prose lg:prose-lg max-w-[1440px] m-auto w-full h-full min-h-screen scroll-smooth">
-      <Header />
+      <Header user={user} api_url={API_URL}/>
       <div className="mt-24">
         {element}
       </div>
