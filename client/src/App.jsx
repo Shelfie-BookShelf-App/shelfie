@@ -7,7 +7,7 @@ import Footer from "./sections/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Search from "./pages/Search";
-import UserProfile from './pages/UserProfile';
+import Saved_Books from './pages/Saved_Books';
 
 function App() {
   const [user, setUser] = useState(null)
@@ -36,7 +36,7 @@ function App() {
     },
     {
       path: '/saved_books',
-      element: user && user.id ? <UserProfile /> : <Login api_url={API_URL}/>
+      element: user && user.id ? <Saved_Books /> : <Login api_url={API_URL}/>
     }
 
   ])
