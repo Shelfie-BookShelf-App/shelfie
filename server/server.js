@@ -7,6 +7,7 @@ const GitHub = require('./config/auth.js')
 const authRoutes = require('./routes/auth.js')
 const bookRoutes = require('./routes/book.js')
 const langRoutes = require('./routes/languages.js')
+const chatbotRoutes = require('./routes/chatbot.js')
 
 const app = express()
 
@@ -36,6 +37,7 @@ app.get('/', (req, res) => {
 app.use('/auth', authRoutes)
 app.use('/books', bookRoutes)
 app.use('/languages', langRoutes)
+app.use('/chatbot', chatbotRoutes)
 
 const PORT = process.env.PORT || 3001
 

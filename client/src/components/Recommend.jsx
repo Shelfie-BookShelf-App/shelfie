@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import GoogleBook from "./GoogleBook";
 
 const Recommend = (props) => {
-  const [books, setBooks] = useState([]); // Holds book names
-  const [bookObjects, setBookObjects] = useState([]); // Holds detailed book objects
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Tracks button state
-  const apiKey = import.meta.env.VITE_API_KEY; // Google Books API key
+  const [bookObjects, setBookObjects] = useState([]); 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); 
+  const apiKey = import.meta.env.VITE_API_KEY; 
   const openRouterApiKey = import.meta.env.VITE_PUBLIC_OPENROUTER_API_KEY;
 
   // Step 1: Generate Book Recommendations Based on `userBooks`
@@ -38,7 +37,6 @@ Do not include any additional text, explanations, or formatting outside of this 
           const bookNames = JSON.parse(data.choices[0].message.content);
           if (Array.isArray(bookNames)) {
             console.log("Recommended Books:", bookNames);
-            setBooks(bookNames); // Save book names
             fetchBookObjects(bookNames); // Fetch detailed book objects
           } else {
             throw new Error("Response is not a JSON array");

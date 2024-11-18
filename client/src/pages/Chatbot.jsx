@@ -2,14 +2,22 @@ import { Box, Button, Stack, TextField } from '@mui/material';
 import { useState, useRef, useEffect } from 'react';
 import OpenAI from "openai";
 
-export default function Chatbot({ myPrompt, initialMessage }) {
+export default function Chatbot({ api_url }) {
+  const books = ['The Great Gatsby', 'The Catcher in the Rye', 'To Kill a Mockingbird', '1984', 'Brave New World', 'The Grapes of Wrath'];
+
   const openRouterApiKey = import.meta.env.VITE_PUBLIC_OPENROUTER_API_KEY;
+  const systemPrompt = `
+  You are a book consultant with extensive knowledge of various genres, authors, and styles.
+  The user has shared their favorite books: ${books.join("; ")}.
+  Based on these preferences, try to answer their questions, such as providing detailed recommendations for other books they might enjoy,
+  and sharing insights into genres or authors they could explore. Always be polite, clear, and concise in your responses. 
+`;
 
   const [messages, setMessages] = useState([
-    { role: 'system', content: myPrompt },
+    { role: 'system', content: systemPrompt },
     {
       role: 'assistant',
-      content: initialMessage || "Hey there! I'm your BookMate. How can I help you choose your next great read?",
+      content: "Hey there! I'm your Shelfie. How can I help you with your reading today?",
     },
   ]);
   const [message, setMessage] = useState('');
@@ -18,67 +26,53 @@ export default function Chatbot({ myPrompt, initialMessage }) {
   const openai = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
     apiKey: openRouterApiKey,
-    dangerouslyAllowBrowser: true
+    dangerouslyAllowBrowser: true,
   });
-
-  const systemPrompt = `
-    You are a book consultant with extensive knowledge of various genres, authors, and styles.
-    You assist users in selecting books based on their preferences, provide detailed recommendations,
-    and share insights into genres or authors they might like. Always be polite, clear, and concise in your responses.
-  `;
 
   const formatData = (rawData) => {
     return rawData
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold formatting
-      .replace(/\n/g, '<br />'); // Line breaks
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+      .replace(/\n/g, '<br />'); 
   };
 
   const sendMessage = async () => {
     if (!message.trim() || isLoading) return;
-  
+
     setIsLoading(true);
+    const newMessages = [...messages, { role: 'user', content: message }];
+
+    setMessages(newMessages);
     setMessage('');
-    setMessages((messages) => [
-      ...messages,
-      { role: 'user', content: message },
-      { role: 'assistant', content: '' },
-    ]);
-  
+
     try {
-      const response = await openai.chat.completions.create({
-        messages: [{ role: 'system', content: systemPrompt }, ...messages, { role: 'user', content: message }],
-        model: "meta-llama/llama-3.1-8b-instruct:free",
-        stream: true,
+      const response = await fetch(`${api_url}/chatbot`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: newMessages,
+          systemPrompt,
+        }),
       });
-  
-      let result = '';
-      for await (const chunk of response) {
-        const content = chunk.choices[0]?.delta?.content;
-        if (content) {
-          result += content;
-          setMessages((messages) => {
-            const lastMessage = messages[messages.length - 1];
-            const otherMessages = messages.slice(0, messages.length - 1);
-            return [
-              ...otherMessages,
-              { ...lastMessage, content: result },
-            ];
-          });
-        }
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch chatbot response');
       }
+
+      const data = await response.json();
+
+      setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
     } catch (error) {
       console.error('Error:', error);
-      setMessages((messages) => [
-        ...messages,
-        {
-          role: 'assistant',
-          content: "Oops! Something went wrong! Please try again later.",
-        },
+      setMessages([
+        ...newMessages,
+        { role: 'assistant', content: 'Oops! Something went wrong!' },
       ]);
+    } finally {
+      setIsLoading(false);
     }
-  
-    setIsLoading(false);
-  };  
+  };
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -106,12 +100,11 @@ export default function Chatbot({ myPrompt, initialMessage }) {
       alignItems="center"
       bgcolor="background.default"
     >
-      <h2>Book Consultant</h2>
       <br />
       <Stack
         direction="column"
         width="80%"
-        height="700px"
+        height="400px"
         bgcolor="background.paper"
         border="1px solid"
         borderColor="primary.main"
@@ -135,12 +128,12 @@ export default function Chatbot({ myPrompt, initialMessage }) {
             >
               <Box
                 sx={{
-                  bgcolor: message.role === 'assistant' ? 'primary.main' : 'secondary.main',
-                  color: message.role === 'assistant' ? 'white' : 'black',
+                  bgcolor: message.role === 'assistant' ? '#d3d3d3' : 'black', // Differentiate assistant vs. user
+                  color: message.role === 'assistant' ? 'black' : 'white',  // Text color
                   borderRadius: 1,
                   p: 2,
                   maxWidth: '75%',
-                  wordBreak: 'break-word', // Use wordBreak here
+                  wordBreak: 'break-word', 
                   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                   textAlign: 'left',
                 }}
@@ -151,7 +144,6 @@ export default function Chatbot({ myPrompt, initialMessage }) {
                   }}
                 />
               </Box>
-
             </Box>
           ))}
           <div ref={messagesEndRef} />
@@ -181,7 +173,13 @@ export default function Chatbot({ myPrompt, initialMessage }) {
             variant="contained"
             onClick={sendMessage}
             disabled={isLoading}
-            sx={{ bgcolor: isLoading ? 'grey' : 'primary.main' }}
+            sx={{
+              bgcolor: 'black', // Set button background to black
+              color: 'white',   // Set button text color to white
+              '&:hover': {
+                bgcolor: 'darkgray', // Optional: Change hover background color
+              },
+            }}
           >
             {isLoading ? 'Sending...' : 'Send'}
           </Button>
