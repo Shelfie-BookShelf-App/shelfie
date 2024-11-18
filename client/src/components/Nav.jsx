@@ -37,6 +37,11 @@ export default function Nav({ user, api_url }) {
             Saved Books
           </NavLink>
         </li>
+        <li>
+          <NavLink to="/chatbot" className="text-white">
+            Chatbot
+          </NavLink>
+        </li>
         {user && user.id ? (
           <li>
             <a

@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Search from "./pages/Search";
 import Saved_Books from './pages/Saved_Books';
+import Chatbot from './pages/Chatbot';
 
 function App() {
   const [user, setUser] = useState(null)
@@ -37,8 +38,11 @@ function App() {
     {
       path: '/saved_books',
       element: user && user.id ? <Saved_Books api_url={API_URL}/> : <Login api_url={API_URL}/>
+    },
+    {
+      path: '/chatbot',
+      element: user && user.id ? <Chatbot api_url={API_URL}/> : <Login api_url={API_URL}/>
     }
-
   ])
 
   return (
