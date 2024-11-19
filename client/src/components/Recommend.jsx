@@ -93,7 +93,7 @@ Do not include any additional text, explanations, or formatting outside of this 
 
       <ul className="grid grid-cols-4 gap-4">
         {bookObjects.map((book) => (
-          <li key={book.id}>
+          <li key={book.id} style={{listStyle: 'None'}}>
             <GoogleBook book={book} api_url={props.api_url}/>
           </li>
         ))}

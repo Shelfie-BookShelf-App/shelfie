@@ -9,8 +9,8 @@ export default function Chatbot({ api_url }) {
   const systemPrompt = `
   You are a book consultant with extensive knowledge of various genres, authors, and styles.
   The user has shared their favorite books: ${books.join("; ")}.
-  Based on these preferences, try to answer their questions, such as providing detailed recommendations for other books they might enjoy,
-  and sharing insights into genres or authors they could explore. Always be polite, clear, and concise in your responses. 
+  Based on these preferences, try to answer their questions, such as providing detailed recommendations for other books they might enjoy, and sharing insights into genres or authors they could explore. Do not give irrelevant answer or include repetitive information, especially when they have not asked. 
+  Always be polite, clear, and concise in your responses. 
 `;
 
   const [messages, setMessages] = useState([
@@ -104,7 +104,7 @@ export default function Chatbot({ api_url }) {
       <Stack
         direction="column"
         width="80%"
-        height="400px"
+        height="450px"
         bgcolor="background.paper"
         border="1px solid"
         borderColor="primary.main"

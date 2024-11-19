@@ -1,15 +1,15 @@
-import BookSlider from "../components/BookSlider";
+// import BookSlider from "../components/BookSlider";
 import Categories from "../components/Categories";
 import GoogleBooks from "../components/GoogleBooks";
-import Sidebar from "../components/Sidebar";
+// import Sidebar from "../components/Sidebar";
+import Searchbar from "../components/Searchbar";
 
 export default function Search({api_url}) {
   return (
-    <div>
+    <div style={{paddingTop:'20px'}}>
+      <Searchbar>Search for title...</Searchbar>
       <Categories />
-      <BookSlider />
       <div className="flex">
-        <Sidebar />
         <GoogleBooks api_url={api_url}/>
       </div>
     </div>

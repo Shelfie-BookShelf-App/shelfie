@@ -10,7 +10,7 @@ export default function GoogleBooks({api_url}) {
     useSelector((state) => state.books);
 
   const apiKey = import.meta.env.VITE_API_KEY;
-  const URL = `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&maxResults=10&key=${apiKey}`;
+  const URL = `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&maxResults=12&key=${apiKey}`;
 
   const dispatch = useDispatch();
 
@@ -36,7 +36,7 @@ export default function GoogleBooks({api_url}) {
   return (
     <ul className="grid grid-cols-4 gap-4">
       {(selectedCategory ? filteredGoogleBooks : googleBooks).map((book) => (
-        <li key={book.id}>
+        <li key={book.id} style={{listStyle: 'None'}}>
           <GoogleBook book={book} api_url={api_url}/>
         </li>
       ))}
