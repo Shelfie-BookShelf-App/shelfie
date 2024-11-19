@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/auth', authRoutes)
-app.use('/books', bookRoutes)
+app.use('/api/books', bookRoutes)
 app.use('/languages', langRoutes)
 app.use('/chatbot', chatbotRoutes)
 
