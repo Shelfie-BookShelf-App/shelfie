@@ -26,8 +26,36 @@ export default function GoogleBook({ book, api_url }) {
     }
   }, [languageCode, api_url]);
 
-  const toggleSaveBook = () => {
-    setSaveBook((prev) => !prev);
+  const toggleSaveBook = async () => {
+    const { id } = book;
+    const {
+      title,
+      imageLinks: { thumbnail },
+      description,
+      pageCount,
+      language,
+      authors,
+    } = book?.volumeInfo;
+    const favoriteBookObj = {
+      id,
+      title,
+      image: thumbnail,
+      description,
+      pageCount,
+      language,
+      authors: authors?.join(", "),
+    };
+    const res = await fetch("http://localhost:3001/api/books", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(favoriteBookObj),
+      credentials: "include",
+    });
+    if (res.ok) {
+      setSaveBook(true);
+    }
   };
 
   return (
@@ -50,10 +78,12 @@ export default function GoogleBook({ book, api_url }) {
       <div style={{ flexGrow: 1 }}>
         <h3 className="font-bold text-lg mb-2">{book?.volumeInfo?.title}</h3>
         <p className="text-sm text-gray-600 mb-1">
-          <strong>Authors:</strong> {book?.volumeInfo?.authors?.join(", ") || "Unknown"}
+          <strong>Authors:</strong>{" "}
+          {book?.volumeInfo?.authors?.join(", ") || "Unknown"}
         </p>
         <p className="text-sm text-gray-600 mb-1">
-          <strong>Published Date:</strong> {book?.volumeInfo?.publishedDate || "N/A"}
+          <strong>Published Date:</strong>{" "}
+          {book?.volumeInfo?.publishedDate || "N/A"}
         </p>
         <p className="text-sm text-gray-600 mb-1">
           <strong>Pages:</strong> {book?.volumeInfo?.pageCount || "N/A"}
@@ -70,10 +100,12 @@ export default function GoogleBook({ book, api_url }) {
             WebkitLineClamp: 2,
           }}
         >
-          <strong>Description:</strong> {book?.volumeInfo?.description || "No description available"}
+          <strong>Description:</strong>{" "}
+          {book?.volumeInfo?.description || "No description available"}
         </p>
         <p className="text-sm text-gray-600 mb-2">
-          <strong>Categories:</strong> {book?.volumeInfo?.categories?.join(", ") || "Uncategorized"}
+          <strong>Categories:</strong>{" "}
+          {book?.volumeInfo?.categories?.join(", ") || "Uncategorized"}
         </p>
       </div>
       <button
