@@ -19,13 +19,3 @@ export default function Home() {
       }
     });
   };
-
-  return (
-    <div className="px-12 flex justify-center space-x-20 mt-5">
-      <BarChart />
-      <PieChart />
-      <RadialPercentageChart />
-      <button onClick={handleSave}>Test</button>
-    </div>
-  );
-}

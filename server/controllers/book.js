@@ -75,62 +75,6 @@ const addFavoriteBook = async (req, res) => {
   }
 };
 
-const addBook = async (req, res) => {
-  try {
-    if (!req.user) {
-      res.status(401).json({ error: "Unauthorized" });
-      return;
-    }
-
-    const { title, image, description, pageCount, language, authors } =
-      req.body;
-
-    let bookExisted = await pool.query(
-      "SELECT COUNT(*) FROM books WHERE title = $1",
-      [title]
-    );
-
-    let bookId;
-
-    if (bookExisted.rows[0].count === 0) {
-      const newBook = await pool.query(
-        `
-        INSERT INTO books (title, image, description, pageCount, language, authors)
-        VALUES($1, $2, $3, $4, $5, $6)
-        RETURNING *`,
-        [title, image, description, pageCount, language, authors]
-      );
-      bookId = newBook.rows[0].id;
-    } else {
-      const existingBook = await pool.query(
-        "SELECT id FROM books WHERE title = $1",
-        [title]
-      );
-      bookId = existingBook.rows[0].id;
-    }
-
-    const bookSaved = await pool.query(
-      "SELECT COUNT(*) FROM users_books WHERE user_id = $1 AND book_id = $2",
-      [req.user.id, bookId]
-    );
-
-    if (bookSaved.rows[0].count === 0) {
-      await pool.query(
-        `
-        INSERT INTO users_books ( user_id, book_id )
-        VALUES($1, $2)`,
-        [req.user.id, book_id]
-      );
-      res.status(201).json({ message: "Book successfully saved" });
-    } else {
-      res.status(409).json({ error: "Book already saved" });
-    }
-  } catch (error) {
-    console.log("Error:", error.message);
-    res.status(409).json({ error: error.message });
-  }
-};
-
 const deleteBook = async (req, res) => {
   try {
     console.log("Deleting route hit");
