@@ -1,11 +1,13 @@
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function SavedBook({ savedBook, api_url, onBookRemoved }) {
-  const { id, title, image, language, description, pagecount, authors } =
+export default function SavedBook({ savedBook, api_url }) {
+  const { id, title, image, language, description, pagecount, authors, categories } =
     savedBook;
 
   const [languageName, setLanguageName] = useState("");
+  const [pagesRead, setPagesRead] = useState(0);
+  const [debouncedPagesRead, setDebouncedPagesRead] = useState(0);
 
   useEffect(() => {
     const fetchLanguageName = async () => {
@@ -15,10 +17,10 @@ export default function SavedBook({ savedBook, api_url, onBookRemoved }) {
           throw new Error(`Error fetching language: ${response.statusText}`);
         }
         const data = await response.json();
-        setLanguageName(data.name); // Set the fetched language name
+        setLanguageName(data.name);
       } catch (error) {
         console.error("Failed to fetch language name:", error);
-        setLanguageName("Unknown"); // Fallback in case of error
+        setLanguageName("Unknown");
       }
     };
 
@@ -26,6 +28,58 @@ export default function SavedBook({ savedBook, api_url, onBookRemoved }) {
       fetchLanguageName();
     }
   }, [language, api_url]);
+
+  useEffect(() => {
+    const fetchPagesRead = async () => {
+      try {
+        const res = await fetch(`${api_url}/api/books/${id}`, {
+          credentials: "include",
+        });
+        if (!res.ok) throw new Error("Failed to fetch pages read");
+        const data = await res.json();
+        setPagesRead(data.pagesread);
+      } catch (error) {
+        console.error("Error fetching pages read:", error);
+      }
+    };
+
+    fetchPagesRead();
+  }, [id, api_url]);
+
+  // Debounce `pagesRead` updates
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedPagesRead(pagesRead);
+    }, 1000); // Wait 1 second before updating
+
+    return () => clearTimeout(handler);
+  }, [pagesRead]);
+
+  // Update the backend when `debouncedPagesRead` changes
+  useEffect(() => {
+    const updatePagesRead = async () => {
+      try {
+        const res = await fetch(`${api_url}/api/books/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ pagesRead: debouncedPagesRead }),
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to update pages read");
+        }
+      } catch (error) {
+        console.error("Error updating pages read:", error);
+      }
+    };
+
+    if (debouncedPagesRead !== 0) {
+      updatePagesRead();
+    }
+  }, [debouncedPagesRead, id, api_url]);
 
   const navigate = useNavigate();
 
@@ -36,21 +90,42 @@ export default function SavedBook({ savedBook, api_url, onBookRemoved }) {
         credentials: "include",
       });
 
-      if (!res.ok) {
+      if (res.ok) {
+        navigate(0); // Refresh the page after deletion
+      } else {
         throw new Error("Failed to delete book");
       }
-
-      // Notify parent to remove the book from the list
-      if (onBookRemoved) {
-        onBookRemoved(id);
-      } else {
-        // Fallback to page refresh if no parent handler is provided
-        navigate(0);
-      }
     } catch (error) {
-      console.error("Failed to delete book:", error);
-      alert("Failed to delete book. Please try again.");
+      console.error("Error deleting book:", error);
     }
+  };
+
+  const sliderStyles = {
+    container: {
+      position: "relative",
+      width: "100%",
+      height: "30px",
+      marginBottom: "1rem",
+    },
+    slider: {
+      width: "100%",
+      position: "absolute",
+      bottom: 0,
+      height: "2px",
+      backgroundColor: "#e5e7eb",
+      appearance: "none",
+      cursor: "pointer",
+    },
+    label: {
+      position: "absolute",
+      top: "0",
+      transform: "translateX(-50%)",
+      color: "black",
+      padding: "2px 6px",
+      borderRadius: "4px",
+      fontSize: "12px",
+      left: `${(pagesRead / pagecount) * 100}%`,
+    },
   };
 
   return (
@@ -59,7 +134,7 @@ export default function SavedBook({ savedBook, api_url, onBookRemoved }) {
       style={{
         width: "300px",
         margin: "0 auto",
-        height: "600px",
+        minHeight: "600px",
         display: "flex",
       }}
     >
@@ -82,7 +157,7 @@ export default function SavedBook({ savedBook, api_url, onBookRemoved }) {
           <strong>Language:</strong> {languageName || "Loading..."}
         </p>
         <p
-          className="text-sm text-gray-600 mb-2"
+          className="text-sm text-gray-600 mb-2 truncate-lines"
           style={{
             display: "-webkit-box",
             WebkitBoxOrient: "vertical",
@@ -90,8 +165,10 @@ export default function SavedBook({ savedBook, api_url, onBookRemoved }) {
             WebkitLineClamp: 2,
           }}
         >
-          <strong>Description:</strong>{" "}
-          {description || "No description available"}
+          <strong>Description:</strong> {description || "No description available"}
+        </p>
+        <p className="text-sm text-gray-600 mb-2">
+          <strong>Categories:</strong> {categories.join(", ") || "Uncategorized"}
         </p>
       </div>
       <button
@@ -101,8 +178,23 @@ export default function SavedBook({ savedBook, api_url, onBookRemoved }) {
           marginTop: "10px",
         }}
       >
-        {"❤️ Saved - Click to Unsaved"}
+        ❤️ Saved - Click to Unsaved
       </button>
+      <div style={sliderStyles.container}>
+        <div style={sliderStyles.label}>{pagesRead}</div>
+        <input
+          type="range"
+          min="0"
+          max={pagecount}
+          value={pagesRead}
+          onChange={(e) => setPagesRead(parseInt(e.target.value))}
+          className="w-full"
+          style={{
+            ...sliderStyles.slider,
+            background: `linear-gradient(to right, #3b82f6 ${(pagesRead / pagecount) * 100}%, #e5e7eb ${(pagesRead / pagecount) * 100}%)`,
+          }}
+        />
+      </div>
     </article>
   );
 }

@@ -16,9 +16,12 @@ export default function Saved_Books({ api_url }) {
 
         // Transform savedBooks into required format
         setSavedBooks(data.books);
-
+        let formattedBooks;
+        if (!data.books || data.books.length === 0) {
+          formattedBooks = ["None"]; // Display "None" if no books are saved
+        }
         // Create a formatted list for Recommend component
-        const formattedBooks = data.books.map((book) => {
+        formattedBooks = data.books.map((book) => {
           const title = book.title || "Unknown Title";
           const author = book.author || "Unknown Author";
           return `${title} (${author})`;

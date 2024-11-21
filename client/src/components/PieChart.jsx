@@ -17,6 +17,9 @@ const PieChart = ({ data = sampleData(), width = 250, height = 250 }) => {
     const radius = Math.min(width, height) / 2;
     const color = d3.scaleOrdinal(d3.schemeCategory10);
 
+    let svg = d3.select(ref.current);
+    svg.selectAll('*').remove();
+
     const pie = d3.pie()
       .value(d => d.value)
       .sort(null);
@@ -25,7 +28,7 @@ const PieChart = ({ data = sampleData(), width = 250, height = 250 }) => {
       .innerRadius(0)
       .outerRadius(radius);
 
-    const svg = d3.select(ref.current)
+    svg = d3.select(ref.current)
       .attr('width', width)
       .attr('height', height + 50)
       .append('g')

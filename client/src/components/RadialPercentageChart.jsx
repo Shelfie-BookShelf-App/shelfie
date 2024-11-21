@@ -13,7 +13,9 @@ const RadialPercentageChart = ({ progress = sampleData(), width = 250, height = 
     const thickness = 30;
 
     const svg = d3.select(ref.current)
-      .attr('width', width)
+    svg.selectAll('*').remove();
+
+    svg.attr('width', width)
       .attr('height', height + 50)
       .append('g')
       .attr('transform', `translate(${width / 2}, ${height / 2})`);

@@ -112,7 +112,7 @@ export const team = [
     name: "Duc Hung Luong",
     role: "Full-Stack Developer",
     description:
-      "Duc curates our collection with an eye for quality and diversity.",
+      "Hung curates our collection with an eye for quality and diversity.",
     avatar_img:
       "https://images.unsplash.com/photo-1654110455429-cf322b40a906?q=80&w=3178&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },

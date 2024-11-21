@@ -32,12 +32,12 @@ const createBooksTable = async () => {
      
       CREATE TABLE IF NOT EXISTS books (
         id VARCHAR(255) PRIMARY KEY,
-        authors TEXT NOT NULL,
-        title TEXT NOT NULL,
-        image TEXT NOT NULL,
-        description TEXT NOT NULL,
-        pagecount INTEGER NOT NULL,
-        language VARCHAR(255) NOT NULL
+        authors TEXT,
+        title TEXT,
+        image TEXT,
+        description TEXT,
+        pagecount INTEGER,
+        language VARCHAR(255)
       ); 
     `;
     await pool.query(createBooksTableQuery);
@@ -56,6 +56,7 @@ const createUsersBooksTable = async () => {
       CREATE TABLE IF NOT EXISTS users_books (
         user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
         book_id VARCHAR(255) REFERENCES books(id) ON DELETE CASCADE,
+        pagesread INTEGER NOT NULL,
         PRIMARY KEY (user_id, book_id)
       );
     `;
@@ -203,9 +204,10 @@ const dropTable = async () => {
       DROP TABLE IF EXISTS categories_books;
       DROP TABLE IF EXISTS books;
       DROP TABLE IF EXISTS languages;
+      DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS categories;
     `;
-    // DROP TABLE IF EXISTS users;
-    // DROP TABLE IF EXISTS categories;
+
     await pool.query(dropTableQuery);
     console.log(`✅ Tables dropped successfully`);
   } catch (err) {
@@ -216,7 +218,7 @@ const dropTable = async () => {
 
 const setup = async () => {
   await dropTable();
-  // await createUsersTable();
+  await createUsersTable();
   await createBooksTable();
   await createUsersBooksTable();
   await createUsersBooksRecTable();
