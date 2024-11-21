@@ -7,7 +7,7 @@ const getBooks = async (req, res) => {
     }
 
     const userBooksQuery = `
-      SELECT books.id, books.title, books.image, books.description, books.pageCount, books.language, books.authors
+      SELECT books.id, books.title, books.image, books.description, books.pagecount, books.language, books.authors
       FROM users_books
       INNER JOIN books ON users_books.book_id = books.id
       WHERE users_books.user_id = $1
@@ -63,7 +63,7 @@ const addFavoriteBook = async (req, res) => {
       bookId = existingBook.rows[0].id;
     } else {
       const newBook = await pool.query(
-        `INSERT INTO books (id, title, image, description, pageCount, language, authors)
+        `INSERT INTO books (id, title, image, description, pagecount, language, authors)
         VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *`,
         [id, title, image, description, pageCount, language, authors]
@@ -167,6 +167,7 @@ const deleteBook = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 const updatePagesRead = async (req, res) => {
   try {
     if (!req.user) {
@@ -229,3 +230,6 @@ const getPagesRead = async (req, res) => {
 }
 
 module.exports = { getBooks, addFavoriteBook, deleteBook, updatePagesRead, getPagesRead };
+=======
+module.exports = { getBooks, addFavoriteBook, deleteBook };
+>>>>>>> 306b16814b77134356acf8df1f6691d3c8edf568

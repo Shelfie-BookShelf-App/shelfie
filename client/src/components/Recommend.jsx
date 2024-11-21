@@ -77,6 +77,13 @@ Do not include any additional text, explanations, or formatting outside of this 
 
   return (
     <div>
+      <ul className="grid grid-cols-4 gap-4">
+        {bookObjects.map((book) => (
+          <li key={book.id} style={{listStyle: 'None'}}>
+            <GoogleBook book={book} api_url={props.api_url}/>
+          </li>
+        ))}
+      </ul>
       <button
         style={{
           backgroundColor: isButtonDisabled ? "gray" : "black",
@@ -88,16 +95,8 @@ Do not include any additional text, explanations, or formatting outside of this 
         onClick={handleGenerateBook}
         disabled={isButtonDisabled} // Disable button if state is true
       >
-        {isButtonDisabled ? "Wait 10 seconds..." : "Recommend Books"}
+        {isButtonDisabled ? "Wait 10 seconds..." : "Generate New Recommendations"}
       </button>
-
-      <ul className="grid grid-cols-4 gap-4">
-        {bookObjects.map((book) => (
-          <li key={book.id} style={{listStyle: 'None'}}>
-            <GoogleBook book={book} api_url={props.api_url}/>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };

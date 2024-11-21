@@ -1,9 +1,32 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export default function SavedBook({ savedBook }) {
-  const { id, title, image, language, description, pagecount, authors, categories } =
+  const { id, title, image, language, description, pageCount, authors } =
     savedBook;
+  
+  const [languageName, setLanguageName] = useState("");
+
+  useEffect(() => {
+    const fetchLanguageName = async () => {
+      try {
+        const response = await fetch(`${api_url}/languages/${language}`);
+        if (!response.ok) {
+          throw new Error(`Error fetching language: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setLanguageName(data.name); // Set the fetched language name
+      } catch (error) {
+        console.error("Failed to fetch language name:", error);
+        setLanguageName("Unknown"); // Fallback in case of error
+      }
+    };
+
+    if (language) {
+      fetchLanguageName();
+    }
+  }, [language, api_url]);
 
   const [pagesRead, setPagesRead] = useState(0);
 
@@ -69,7 +92,7 @@ export default function SavedBook({ savedBook }) {
   const navigate = useNavigate();
 
   const removeSavedBook = async () => {
-    const res = await fetch(`http://localhost:3001/api/books/${id}`, {
+    const res = await fetch(`${api_url}/api/books/${id}`, {
       method: "DELETE",
       credentials: "include",
     });
@@ -108,7 +131,7 @@ export default function SavedBook({ savedBook }) {
           <strong>Pages:</strong> {pagecount || "N/A"}
         </p>
         <p className="text-sm text-gray-600 mb-1">
-          <strong>Language:</strong> {language || "Loading..."}
+          <strong>Language:</strong> {languageName || "Loading..."}
         </p>
         <p
           className="text-sm text-gray-600 mb-2 truncate-lines"

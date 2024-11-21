@@ -3,25 +3,51 @@ import { useState, useRef, useEffect } from 'react';
 import OpenAI from "openai";
 
 export default function Chatbot({ api_url }) {
-  const books = ['The Great Gatsby', 'The Catcher in the Rye', 'To Kill a Mockingbird', '1984', 'Brave New World', 'The Grapes of Wrath'];
-
-  const openRouterApiKey = import.meta.env.VITE_PUBLIC_OPENROUTER_API_KEY;
-  const systemPrompt = `
-  You are a book consultant with extensive knowledge of various genres, authors, and styles.
-  The user has shared their favorite books: ${books.join("; ")}.
-  Based on these preferences, try to answer their questions, such as providing detailed recommendations for other books they might enjoy, and sharing insights into genres or authors they could explore. Do not give irrelevant answer or include repetitive information, especially when they have not asked. 
-  Always be polite, clear, and concise in your responses. 
-`;
-
-  const [messages, setMessages] = useState([
-    { role: 'system', content: systemPrompt },
-    {
-      role: 'assistant',
-      content: "Hey there! I'm your Shelfie. How can I help you with your reading today?",
-    },
-  ]);
+  const [savedBooks, setSavedBooks] = useState([]);
+  const [books, setBooks] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const openRouterApiKey = import.meta.env.VITE_PUBLIC_OPENROUTER_API_KEY;
+
+  // Fetch saved books on component mount
+  useEffect(() => {
+    const fetchSavedBooks = async () => {
+      try {
+        const res = await fetch(`${api_url}/api/books`, { credentials: 'include' });
+        if (!res.ok) {
+          throw new Error('Failed to fetch saved books');
+        }
+        const data = await res.json();
+        setSavedBooks(data.books || []);
+        const formattedBooks = data.books.map((book) => {
+          const title = book.title || "Unknown Title";
+          const author = book.author || "Unknown Author";
+          return `${title} (${author})`;
+        });
+        setBooks(formattedBooks);
+        // Create the initial systemPrompt dynamically
+        const systemPrompt = `
+          You are a book consultant with extensive knowledge of various genres, authors, and styles.
+          The user has shared their favorite books: ${formattedBooks.join("; ")}.
+          Based on these preferences, try to answer their questions, such as providing detailed recommendations for other books they might enjoy, and sharing insights into genres or authors they could explore. Do not give irrelevant answers or include repetitive information, especially when they have not asked. 
+          Always be polite, clear, and concise in your responses.
+        `;
+        setMessages([
+          { role: 'system', content: systemPrompt },
+          {
+            role: 'assistant',
+            content: "Hey there! I'm your Shelfie. How can I help you with your reading today?",
+          },
+        ]);
+      } catch (error) {
+        console.error('Error fetching saved books:', error);
+      }
+    };
+
+    fetchSavedBooks();
+  }, [api_url]);
 
   const openai = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
@@ -52,7 +78,6 @@ export default function Chatbot({ api_url }) {
         },
         body: JSON.stringify({
           messages: newMessages,
-          systemPrompt,
         }),
       });
 

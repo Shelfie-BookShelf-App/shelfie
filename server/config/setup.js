@@ -36,7 +36,7 @@ const createBooksTable = async () => {
         title TEXT NOT NULL,
         image TEXT NOT NULL,
         description TEXT NOT NULL,
-        pageCount INTEGER NOT NULL,
+        pagecount INTEGER NOT NULL,
         language VARCHAR(255) NOT NULL
       ); 
     `;
