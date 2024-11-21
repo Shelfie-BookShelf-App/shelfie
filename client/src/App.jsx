@@ -12,7 +12,7 @@ import Chatbot from "./pages/Chatbot";
 
 function App() {
   const [user, setUser] = useState(null);
-  const API_URL = "http://localhost:3001";
+  const API_URL = import.meta.env.VITE_SERVER_URL|| "http://localhost:3001";
 
   useEffect(() => {
     const getUser = async () => {
