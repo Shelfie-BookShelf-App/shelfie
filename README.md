@@ -20,7 +20,9 @@ Inspired by the need for a personalized and AI-enhanced reading experience, Shel
 
 Frontend: React, Tailwind CSS/Vanilla CSS
 
-Backend: Express - Node.js, PostgreSQL, Passport.js, Railway, OpenAI API with LangChain
+Backend: Express - Node.js, PostgreSQL, Passport.js, Railway, OpenRouter/Llama3.1
+
+API: Google Books API
 
 ## Features
 
