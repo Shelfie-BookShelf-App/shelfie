@@ -45,7 +45,7 @@ export default function GoogleBook({ book, api_url }) {
       language,
       authors: authors?.join(", "),
     };
-    const res = await fetch("http://localhost:3001/api/books", {
+    const res = await fetch(`${api_url}/api/books`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export default function GoogleBook({ book, api_url }) {
         />
       </figure>
       <div style={{ flexGrow: 1 }}>
-        <h3 className="font-bold text-lg mb-2">{book?.volumeInfo?.title}</h3>
+        <h3 className="font-bold text-lg mb-2">{book?.volumeInfo?.title || "Unknown"}</h3>
         <p className="text-sm text-gray-600 mb-1">
           <strong>Authors:</strong>{" "}
           {book?.volumeInfo?.authors?.join(", ") || "Unknown"}
