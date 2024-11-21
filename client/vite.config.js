@@ -8,11 +8,6 @@ export default defineConfig({
     outDir: '../server/public',
     emptyOutDir: true
   },
-  resolve: {
-    alias: {
-      'picocss': path.resolve(__dirname, '../node_modules/@picocss/pico/css')
-    }
-  },
   server: {
     proxy: {
       '/api': {
