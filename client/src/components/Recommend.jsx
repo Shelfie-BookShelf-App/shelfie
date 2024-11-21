@@ -18,6 +18,7 @@ const Recommend = (props) => {
 IMPORTANT: Only return a JSON array of book names. The response must follow this exact format:
 ["Book Name 1", "Book Name 2", "Book Name 3"]
 
+If you cannot find any relevant books or my favorite books is None, return an empty array: [], and nothing else.
 Do not include any additional text, explanations, or formatting outside of this JSON array.`;
 
     fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -36,7 +37,7 @@ Do not include any additional text, explanations, or formatting outside of this 
         try {
           const bookNames = JSON.parse(data.choices[0].message.content);
           if (Array.isArray(bookNames)) {
-            console.log("Recommended Books:", bookNames);
+            // console.log("Recommended Books:", bookNames);
             fetchBookObjects(bookNames); // Fetch detailed book objects
           } else {
             throw new Error("Response is not a JSON array");
@@ -53,7 +54,10 @@ Do not include any additional text, explanations, or formatting outside of this 
   // Step 2: Fetch Book Objects Based on AI Recommendations
   const fetchBookObjects = async (bookNames) => {
     const detailedBooks = [];
-
+    if (!bookNames || bookNames.length === 0) {
+      setBookObjects([]); 
+      return;
+    }
     for (const bookName of bookNames) {
       try {
         const res = await fetch(
@@ -77,13 +81,27 @@ Do not include any additional text, explanations, or formatting outside of this 
 
   return (
     <div>
-      <ul className="grid grid-cols-4 gap-4">
-        {bookObjects.map((book) => (
-          <li key={book.id} style={{listStyle: 'None'}}>
-            <GoogleBook book={book} api_url={props.api_url}/>
-          </li>
-        ))}
-      </ul>
+      {bookObjects.length === 0 ? (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "20px",
+            color: "gray",
+            fontStyle: "italic",
+          }}
+        >
+          No recommendations found
+        </div>
+      ) : (
+        <ul className="grid grid-cols-4 gap-4">
+          {bookObjects.map((book) => (
+            <li key={book.id} style={{ listStyle: "none" }}>
+              <GoogleBook book={book} api_url={props.api_url} />
+            </li>
+          ))}
+        </ul>
+      )}
+
       <button
         style={{
           backgroundColor: isButtonDisabled ? "gray" : "black",

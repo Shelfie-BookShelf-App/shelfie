@@ -24,10 +24,10 @@ export default function HowItWorks() {
           );
         })}
       </div>
-      <div className="flex gap-4">
+      {/* <div className="flex gap-4">
         <button className="btn">Learn More</button>
         <button className="btn btn-neutral">Sign Up!</button>
-      </div>
+      </div> */}
     </section>
   );
 }

@@ -21,11 +21,17 @@ export default function Chatbot({ api_url }) {
         }
         const data = await res.json();
         setSavedBooks(data.books || []);
-        const formattedBooks = data.books.map((book) => {
+        let formattedBooks;
+        if (!data.books || data.books.length === 0) {
+          formattedBooks = ["None"]; // Display "None" if no books are saved
+        }
+        else {
+          formattedBooks = data.books.map((book) => {
           const title = book.title || "Unknown Title";
           const author = book.author || "Unknown Author";
           return `${title} (${author})`;
         });
+      }
         setBooks(formattedBooks);
         // Create the initial systemPrompt dynamically
         const systemPrompt = `

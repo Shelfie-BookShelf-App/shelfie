@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import BarChart from "../components/BarChart";
-import RadialPercentageChart from "../components/RadialPercentageChart";
-import PieChart from "../components/PieChart";
+// import { useState, useEffect } from "react";
+// import BarChart from "../components/BarChart";
+// import RadialPercentageChart from "../components/RadialPercentageChart";
+// import PieChart from "../components/PieChart";
 
 export default function Home() {
   const handleSave = () => {

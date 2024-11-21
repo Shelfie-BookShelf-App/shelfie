@@ -9,10 +9,10 @@ export default function Hero() {
         adventure. Explore our curated selection and find your next favorite
         read today!
       </p>
-      <div className="flex gap-4">
+      {/* <div className="flex gap-4">
         <button className="btn btn-neutral">Login</button>
         <button className="btn">Explore</button>
-      </div>
+      </div> */}
       <div className="grid grid-cols-3 grid-rows-3 my-12 gap-4">
         <figure>
           <img

@@ -65,7 +65,7 @@ export default function GoogleBook({ book, api_url }) {
       style={{
         width: "300px",
         margin: "0 auto",
-        height: "600px",
+        minHeight: "600px",
         display: "flex",
       }}
     >

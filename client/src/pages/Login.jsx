@@ -13,10 +13,10 @@ export default function Login() {
   return (
     <div className="px-12">
       <Hero />
-      <Features />
+      {/* <Features /> */}
       <FeatureList />
-      <CTA />
-      <Testimonial />
+      {/* <CTA /> */}
+      {/* <Testimonial /> */}
       <HowItWorks />
       <Team />
     </div>

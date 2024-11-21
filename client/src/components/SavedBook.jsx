@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-export default function SavedBook({ savedBook, api_url }) {
+export default function SavedBook({ savedBook, api_url, onBookRemoved }) {
   const { id, title, image, language, description, pagecount, authors } =
     savedBook;
-  
+
   const [languageName, setLanguageName] = useState("");
 
   useEffect(() => {
@@ -30,13 +30,26 @@ export default function SavedBook({ savedBook, api_url }) {
   const navigate = useNavigate();
 
   const removeSavedBook = async () => {
-    const res = await fetch(`${api_url}/api/books/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
+    try {
+      const res = await fetch(`${api_url}/api/books/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
 
-    if (res.ok) {
-      navigate(0);
+      if (!res.ok) {
+        throw new Error("Failed to delete book");
+      }
+
+      // Notify parent to remove the book from the list
+      if (onBookRemoved) {
+        onBookRemoved(id);
+      } else {
+        // Fallback to page refresh if no parent handler is provided
+        navigate(0);
+      }
+    } catch (error) {
+      console.error("Failed to delete book:", error);
+      alert("Failed to delete book. Please try again.");
     }
   };
 
@@ -62,9 +75,6 @@ export default function SavedBook({ savedBook, api_url }) {
         <p className="text-sm text-gray-600 mb-1">
           <strong>Authors:</strong> {authors || "Unknown"}
         </p>
-        {/* <p className="text-sm text-gray-600 mb-1">
-          <strong>Published Date:</strong> {publishedDate || "N/A"}
-        </p> */}
         <p className="text-sm text-gray-600 mb-1">
           <strong>Pages:</strong> {pagecount || "N/A"}
         </p>
@@ -72,7 +82,7 @@ export default function SavedBook({ savedBook, api_url }) {
           <strong>Language:</strong> {languageName || "Loading..."}
         </p>
         <p
-          className="text-sm text-gray-600 mb-2 truncate-lines"
+          className="text-sm text-gray-600 mb-2"
           style={{
             display: "-webkit-box",
             WebkitBoxOrient: "vertical",
@@ -83,10 +93,6 @@ export default function SavedBook({ savedBook, api_url }) {
           <strong>Description:</strong>{" "}
           {description || "No description available"}
         </p>
-        {/* <p className="text-sm text-gray-600 mb-2">
-          <strong>Categories:</strong>{" "}
-          {book?.volumeInfo?.categories?.join(", ") || "Uncategorized"}
-        </p> */}
       </div>
       <button
         onClick={removeSavedBook}
