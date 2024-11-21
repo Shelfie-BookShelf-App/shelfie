@@ -39,7 +39,6 @@ export default function Home() {
           setCategoriesData(formattedCategoriesData);
         })
       }
-<<<<<<< HEAD
     })
   }, []);
 
@@ -93,8 +92,4 @@ export default function Home() {
       <SavedBooks />
     </div>
   )
-=======
-    });
-  };
->>>>>>> 306b16814b77134356acf8df1f6691d3c8edf568
 }

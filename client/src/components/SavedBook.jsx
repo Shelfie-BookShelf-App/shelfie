@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 
-export default function SavedBook({ savedBook }) {
-  const { id, title, image, language, description, pageCount, authors } =
+export default function SavedBook({ savedBook, api_url }) {
+  const { id, title, image, language, description, pagecount, authors, categories } =
     savedBook;
   
   const [languageName, setLanguageName] = useState("");

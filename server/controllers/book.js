@@ -167,7 +167,6 @@ const deleteBook = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 const updatePagesRead = async (req, res) => {
   try {
     if (!req.user) {
@@ -230,6 +229,3 @@ const getPagesRead = async (req, res) => {
 }
 
 module.exports = { getBooks, addFavoriteBook, deleteBook, updatePagesRead, getPagesRead };
-=======
-module.exports = { getBooks, addFavoriteBook, deleteBook };
->>>>>>> 306b16814b77134356acf8df1f6691d3c8edf568
