@@ -4,7 +4,7 @@ CodePath WEB103 Final Project
 
 Designed and developed by: Huy Pham, Hiep Nguyen, Hung Luong
 
-🔗 Link to deployed app:
+🔗 Link to deployed app: https://shelfie-8vkb.onrender.com/
 
 ## About
 
