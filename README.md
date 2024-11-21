@@ -30,19 +30,19 @@ API: Google Books API
 
 ✅ Users can search for books by title, with future plans to integrate more advanced search algorithms.
 
-![Demo Gif](./client/src/assets/Milestone4_Demo.gif)
+![Feature 1](./milestones/recording_1.gif)
 
 ### 2. Account Bookmarking and Recommendation System
 
 Users can save their favorite books, log in and out of their accounts, and benefit from machine learning-based book recommendations trained on their reading history. A relational database PostgreSQL and user authentication system support these features.
 
-[gif goes here]
+![Feature 2](./milestones/recording_2.gif)
 
 ### 3. LLM Chatbot for Book Consulting
 
 A language model chatbot offers users personalized book consulting and recommendations, based on their preferences and reading habits.
 
-[gif goes here]
+![Feature 3](./milestones/recording_3.gif)
 
 ## Installation Instructions
 
