@@ -28,6 +28,7 @@ export default function GoogleBook({ book, api_url }) {
 
   const toggleSaveBook = async () => {
     const { id } = book;
+    console.log(book);
     const {
       title,
       imageLinks: { thumbnail },
@@ -35,6 +36,7 @@ export default function GoogleBook({ book, api_url }) {
       pageCount,
       language,
       authors,
+      categories
     } = book?.volumeInfo;
     const favoriteBookObj = {
       id,
@@ -44,6 +46,7 @@ export default function GoogleBook({ book, api_url }) {
       pageCount,
       language,
       authors: authors?.join(", "),
+      categories: categories?.join(", "),
     };
     const res = await fetch("http://localhost:3001/api/books", {
       method: "POST",

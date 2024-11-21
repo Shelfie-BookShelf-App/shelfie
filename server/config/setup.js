@@ -56,6 +56,7 @@ const createUsersBooksTable = async () => {
       CREATE TABLE IF NOT EXISTS users_books (
         user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
         book_id VARCHAR(255) REFERENCES books(id) ON DELETE CASCADE,
+        pagesread INTEGER NOT NULL,
         PRIMARY KEY (user_id, book_id)
       );
     `;

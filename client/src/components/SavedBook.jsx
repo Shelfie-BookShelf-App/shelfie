@@ -1,8 +1,70 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function SavedBook({ savedBook }) {
-  const { id, title, image, language, description, pageCount, authors } =
+  const { id, title, image, language, description, pagecount, authors, categories } =
     savedBook;
+
+  const [pagesRead, setPagesRead] = useState(0);
+
+  useEffect(() => {
+    const fetchPagesRead = async () => {
+      const res = await fetch(`http://localhost:3001/api/books/${id}`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+      setPagesRead(data.pagesread);
+    };
+
+    fetchPagesRead();
+  }, [id])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const updatePagesRead = async () => {
+        await fetch(`http://localhost:3001/api/books/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ pagesRead }),
+        });
+      };
+
+      updatePagesRead();
+    }, 5000); // 10 seconds
+
+    return () => clearInterval(interval);
+  }, [pagesRead, id]);
+
+  const sliderStyles = {
+    container: {
+      position: 'relative',
+      width: '100%',
+      height: '30px',  // Increased height to accommodate the label
+      marginBottom: '1rem'
+    },
+    slider: {
+      width: '100%',
+      position: 'absolute',
+      bottom: 0,
+      height: '2px',
+      backgroundColor: '#e5e7eb',
+      appearance: 'none',
+      cursor: 'pointer'
+    },
+    label: {
+      position: 'absolute',
+      top: '0',
+      transform: 'translateX(-50%)',
+      color: 'black',
+      padding: '2px 6px',
+      borderRadius: '4px',
+      fontSize: '12px',
+      left: `${(pagesRead / pagecount) * 100}%`
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -43,7 +105,7 @@ export default function SavedBook({ savedBook }) {
           <strong>Published Date:</strong> {publishedDate || "N/A"}
         </p> */}
         <p className="text-sm text-gray-600 mb-1">
-          <strong>Pages:</strong> {pageCount || "N/A"}
+          <strong>Pages:</strong> {pagecount || "N/A"}
         </p>
         <p className="text-sm text-gray-600 mb-1">
           <strong>Language:</strong> {language || "Loading..."}
@@ -60,10 +122,10 @@ export default function SavedBook({ savedBook }) {
           <strong>Description:</strong>{" "}
           {description || "No description available"}
         </p>
-        {/* <p className="text-sm text-gray-600 mb-2">
+        <p className="text-sm text-gray-600 mb-2">
           <strong>Categories:</strong>{" "}
-          {book?.volumeInfo?.categories?.join(", ") || "Uncategorized"}
-        </p> */}
+          {categories.join(", ") || "Uncategorized"}
+        </p>
       </div>
       <button
         onClick={removeSavedBook}
@@ -74,6 +136,21 @@ export default function SavedBook({ savedBook }) {
       >
         {"❤️ Saved - Click to Unsaved"}
       </button>
+      <div style={sliderStyles.container}>
+        <div style={sliderStyles.label}>{pagesRead}</div>
+        <input
+          type="range"
+          min="0"
+          max={pagecount}
+          value={pagesRead}
+          onChange={(e) => setPagesRead(parseInt(e.target.value))}
+          className="w-full"
+          style={{
+            ...sliderStyles.slider,
+            background: `linear-gradient(to right, #3b82f6 ${(pagesRead / pagecount) * 100}%, #e5e7eb ${(pagesRead / pagecount) * 100}%)`
+          }}
+        />
+      </div>
     </article>
   );
 }
