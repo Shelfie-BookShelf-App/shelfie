@@ -46,4 +46,38 @@ A language model chatbot offers users personalized book consulting and recommend
 
 ## Installation Instructions
 
-[instructions go here]
+```
+git clone https://github.com/Shelfie-BookShelf-App/main-app.git
+cd server npm install
+cd ..
+cd client npm install
+```
+
+In the `client` directory, create a `.env` file with this structure (you'll need to generate your own API key for it to work)
+
+```
+VITE_API_KEY = [GOOGLE_BOOKS_API_KEY]
+VITE_PUBLIC_OPENROUTER_API_KEY=[OPENROUTER_API_KEY]
+```
+
+In the `server` directory, create a `.env` file with this structure (you'll need to generate your own API key for it to work)
+
+```
+PG_CONNECTION_STRING=[POSTGRES_CONNECTION_STRING]
+GITHUB_CLIENT_ID=[OAuth KEY]
+GITHUB_CLIENT_SECRET=[OAuth KEY]
+SESSION_SECRET=[ANY STRING CAN GO HERE...]
+OPENROUTER_API_KEY=[OPENROUTER_API_KEY]
+```
+
+Launch the project on local host:
+
+```
+cd client npm run dev
+```
+
+then
+
+```
+cd server npm start
+```
