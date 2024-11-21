@@ -1,11 +1,14 @@
 const GitHubStrategy = require('passport-github2');
 const { pool } = require('./database.js');
 
+const callbackURL = process.env.CLIENT_URL
+    ? `${process.env.CLIENT_URL}/auth/github/callback`
+    : 'http://localhost:3001/auth/github/callback';
+
 const options = {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3001/auth/github/callback',
-    // scope: ['User.Read', 'profile'],
+    callbackURL,
 };
 
 const verify = async (accessToken, refreshToken, profile, done) => {
