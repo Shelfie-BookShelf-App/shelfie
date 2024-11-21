@@ -36,7 +36,7 @@ export default function Saved_Books({ api_url }) {
   return (
     <div>
       <h1>Saved Books</h1>
-      <SavedBooks savedBooks={savedBooks} />
+      <SavedBooks savedBooks={savedBooks} api_url={api_url} />
       <h1>Recommended Books</h1>
       <Recommend books={books} api_url={api_url} />
     </div>

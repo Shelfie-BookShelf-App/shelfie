@@ -15,6 +15,7 @@ export default function GoogleBook({ book, api_url }) {
         }
         const data = await response.json();
         setLanguageName(data.name); // Set the fetched language name
+        console.log(`${api_url}/languages/${languageCode}`);
       } catch (error) {
         console.error("Failed to fetch language name:", error);
         setLanguageName("Unknown"); // Fallback in case of error
